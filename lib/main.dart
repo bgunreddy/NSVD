@@ -1,16 +1,23 @@
+import 'package:arp_scan/my_home_page.dart';
 import 'package:arp_scanner/device.dart';
 import 'package:flutter/material.dart';
 
 import 'package:arp_scanner/arp_scanner.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'my_homepage.dart';
 
-void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+Future main()async {
+   WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // ignore: deprecated_member_use
+  FlutterNativeSplash.removeAfter(intialization);
+  await intialization(null);
   runApp(const MyApp());
   // FlutterNativeSplash.remove();
+}
+
+Future intialization(BuildContext? context) async{
+  await Future.delayed(const Duration(seconds: 3));
 }
 
 class MyApp extends StatefulWidget {
@@ -21,29 +28,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Device> devices = [];
-
-  @override
-  void initState() {
-    super.initState();
-    ArpScanner.onScanning.listen((Device device) {
-      setState(() {
-        devices.add(device);
-      });
-    });
-    ArpScanner.onScanFinished.listen((List<Device> devices) {
-      setState(() {
-        this.devices = devices;
-      });
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Lato"),
-      home: HomePage(devices: devices),
+      home:const HomePage(),
     );
   }
 }
